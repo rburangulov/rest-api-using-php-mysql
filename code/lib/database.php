@@ -1,10 +1,5 @@
 <?php
 class Database{
-    private static $database_name ='users';
-    private static $database_host = 'localhost';
-    private static $database_user = 'root';
-    private static $database_user_password = 'root';
-
     private static $connection_status = null;
 
     public function __construct(){
@@ -15,7 +10,8 @@ class Database{
     {
         if(self::$connection_status == null)
         try{
-           self::$connection_status = new PDO('mysql:host='.self::$database_host.';dbname='.self::$database_name.'', self::$database_user, self::$database_user_password);
+	   $ini = parse_ini_file("config");
+           self::$connection_status = new PDO('mysql:host='.$ini["database_host"].';dbname='.$ini["database_name"].'', $ini["database_user"], $ini["database_password"]);
 
         }catch(PDOException $e)
         {

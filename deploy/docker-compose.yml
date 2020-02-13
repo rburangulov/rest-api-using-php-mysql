@@ -1,0 +1,22 @@
+web:
+    image: ingles/api-nginx
+    ports:
+        - "80:80"
+    volumes:
+        - ../code:/api
+    links:
+        - php
+php:
+    image: ingles/api-php
+    volumes:
+        - ../code:/api
+    links:
+        - db
+db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+    expose:
+        - '3306'

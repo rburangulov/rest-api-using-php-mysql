@@ -1,7 +1,7 @@
-﻿<?php
+<?php
+
 include('lib/functions.php');
 header('content-type: application/json');
-
 
 if($_SERVER['REQUEST_METHOD']=="GET")
 {
