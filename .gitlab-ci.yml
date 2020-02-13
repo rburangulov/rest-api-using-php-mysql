@@ -1,0 +1,17 @@
+stages:
+  - build
+  - push
+
+before_script:
+  - echo -n $DOCKERHUB_PASSWORD  | docker login -u $DOCKERHUB_USER --password-stdin 
+
+Build:
+  stage: build
+  script:
+          - docker build -t ingles/api-php:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA -f deploy/php.dockerfile code
+          - docker build -t ingles/api-nginx:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA -f deploy/nginx.dockerfile deploy
+Push:
+  stage: push
+  script:
+          - docker push ingles/api-php:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA 
+          - docker push ingles/api-nginx:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA 
