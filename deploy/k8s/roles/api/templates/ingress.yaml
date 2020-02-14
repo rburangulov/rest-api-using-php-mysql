@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: api
+  namespace: {{ namespace }}
+  annotations:
+    kubernetes.io/ingress.class: traefik
+  labels:
+    app: api
+spec:
+  rules:
+  - host: {{ namespace }}.c0n.ru
+    http:
+      paths:
+      - backend:
+          serviceName: api-nginx
+          servicePort: 80

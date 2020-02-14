@@ -1,0 +1,29 @@
+- name: Deploy system env configmap
+  k8s_raw:
+    kubeconfig: "{{ kubeconfig_file }}"
+    state: present
+    definition: "{{ lookup('template', '{{ role_path }}/templates/system-env-configmap.yaml') | from_yaml }}"
+
+- name: Deploy system nginx configmap
+  k8s_raw:
+    kubeconfig: "{{ kubeconfig_file }}"
+    state: present
+    definition: "{{ lookup('template', '{{ role_path }}/templates/system-nginx-configmap.yaml') | from_yaml }}"
+
+- name: Deploy system deployment
+  k8s_raw:
+    kubeconfig: "{{ kubeconfig_file }}"
+    state: present
+    definition: "{{ lookup('template', '{{ role_path }}/templates/system-deployment.yaml') | from_yaml }}"
+
+- name: Deploy system service
+  k8s_raw:
+    kubeconfig: "{{ kubeconfig_file }}"
+    state: present
+    definition: "{{ lookup('template', '{{ role_path }}/templates/system-service.yaml') | from_yaml }}"
+
+- name: Deploy system ingress
+  k8s_raw:
+    kubeconfig: "{{ kubeconfig_file }}"
+    state: present
+    definition: "{{ lookup('template', '{{ role_path }}/templates/system-ingress.yaml') | from_yaml }}"

@@ -10,7 +10,7 @@ class Database{
     {
         if(self::$connection_status == null)
         try{
-	   $ini = parse_ini_file("config");
+	   $ini = parse_ini_file("env");
            self::$connection_status = new PDO('mysql:host='.$ini["database_host"].';dbname='.$ini["database_name"].'', $ini["database_user"], $ini["database_password"]);
 
         }catch(PDOException $e)

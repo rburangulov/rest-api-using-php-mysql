@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: api-nginx
+    namespace: {{ namespace }}
+    labels:
+        app: api
+data:
+    site.conf: |
+      server {
+        index index.php index.html;
+        server_name _;
+        root /api;
+        location ~ \.php$ {
+           try_files $uri =404;
+           fastcgi_split_path_info ^(.+\.php)(/.+)$;
+           fastcgi_pass api-php:9000;
+           fastcgi_index index.php;
+           include fastcgi_params;
+           fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+           fastcgi_param PATH_INFO $fastcgi_path_info;
+        }
+     }

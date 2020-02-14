@@ -1,0 +1,63 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: api
+  namespace: {{ namespace }}
+  labels:
+    app: api
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - name: api-php
+        image: "ingles/api-php:{{ image_tag }}"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: main
+          containerPort: 9000
+          protocol: TCP
+        readinessProbe:
+          tcpSocket:
+            port: 9000
+        livenessProbe:
+          tcpSocket:
+            port: 9000
+        volumeMounts:
+        - name: api-env
+          mountPath: /api/env
+          subPath: env
+        - name: shared-files
+          mountPath: /var/www/html
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "cp -r /api/* /var/www/html"]
+      - name: api-nginx
+        image: "ingles/api-nginx:{{ image_tag }}"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        volumeMounts:
+        - name: shared-files
+          mountPath: /api
+        - name: api-nginx
+          mountPath: /etc/nginx/conf.d/site.conf
+          subPath: site.conf
+      volumes:
+      - name: shared-files
+        emptyDir: {}
+      - name: api-env
+        configMap:
+          name: api-env
+      - name: api-nginx
+        configMap:
+          name: api-nginx
