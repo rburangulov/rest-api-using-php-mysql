@@ -9,7 +9,7 @@ metadata:
     app: api
 spec:
   rules:
-  - host: {{ namespace }}.c0n.ru
+  - host: {{ namespace }}.site.com
     http:
       paths:
       - backend:
