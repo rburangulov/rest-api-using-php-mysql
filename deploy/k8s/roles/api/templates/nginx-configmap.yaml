@@ -6,7 +6,7 @@ metadata:
     labels:
         app: api
 data:
-    site.conf: |
+    default.conf: |
       server {
         index index.php index.html;
         server_name _;
